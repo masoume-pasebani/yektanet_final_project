@@ -58,7 +58,7 @@ class InterviewerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interviewer
-        fields = ('username', 'password', 'first_name', 
+        fields = ('username', 'password', 'first_name', 'last_name')
 
 
 class HRSerializer(serializers.ModelSerializer):
