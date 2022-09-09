@@ -58,8 +58,8 @@ class InterviewerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interviewer
-        fields = ('username', 'password', 'first_name', 'last_name', 'phone_number')
-        read_only_fields = ('user_type', )
+        fields = ('username', 'password', 'first_name', 'last_name')
+
 
 class HRSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=100, write_only=True)
