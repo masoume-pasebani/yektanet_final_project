@@ -5,12 +5,10 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 from rest_framework import generics, status
-from rest_framework.exceptions import ValidationError
-from rest_framework.views import APIView
-from rest_framework.viewsets import ModelViewSet
 
-from Interview.models import Interview, Comment
-from Interview.serializers import InterviewRegisterSerializer, CommentSerializer
+
+from Interview.models import Interview, Comment, Feedback
+from Interview.serializers import InterviewRegisterSerializer, CommentSerializer, FeedbackSerializer
 from accounts.permissions import IsInterviewer, IsHR, IsHROrInterviewer, IsOwnerOrReadOnly
 
 
@@ -26,14 +24,10 @@ class CommentListAPIView(generics.ListAPIView):
 
 
 class CommentCreateAPIView(generics.ListCreateAPIView):
+
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
     permission_classes = [IsHROrInterviewer]
-
-
-class CommentDetailAPIView(generics.RetrieveAPIView):
-    queryset = Comment.objects.all()
-    serializer_class = CommentSerializer
 
 
 class CommentUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -45,4 +39,16 @@ class CommentUpdateAPIView(generics.RetrieveUpdateAPIView):
 class CommentDestroyAPIView(generics.RetrieveDestroyAPIView):
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsOwnerOrReadOnly,]
+    permission_classes = [IsOwnerOrReadOnly]
+
+
+class FeedbackCreateAPIView(generics.ListCreateAPIView):
+    queryset = Feedback.objects.all()
+    serializer_class = FeedbackSerializer
+    permission_classes = [IsInterviewer]
+
+
+class EditInterview(generics.RetrieveUpdateAPIView):
+    queryset = Interview.objects.all()
+    serializer_class = InterviewRegisterSerializer
+    permission_classes = [IsHR]
