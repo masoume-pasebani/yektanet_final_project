@@ -33,6 +33,9 @@ class Applicant(models.Model):
     gender = models.CharField(max_length=10, choices=GENDER, default='Male')
     status = models.CharField(max_length=25, choices=STATUS, default='Pending')
 
+    def __str__(self):
+        return self.first_name+' '+self.last_name
+
 
 class Interviewer(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
@@ -40,9 +43,15 @@ class Interviewer(models.Model):
     last_name = models.CharField(max_length=200, blank=False)
     phone_number = models.CharField(max_length=12)
 
+    def __str__(self):
+        return self.first_name+' '+self.last_name
+
 
 class HR(models.Model):
     user = models.OneToOneField(get_user_model(), on_delete=models.CASCADE)
     first_name = models.CharField(max_length=200, blank=False)
     last_name = models.CharField(max_length=200, blank=False)
     phone_number = models.CharField(max_length=12)
+
+    def __str__(self):
+        return self.first_name+' '+self.last_name

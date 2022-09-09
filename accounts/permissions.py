@@ -44,6 +44,23 @@ class IsHR(permissions.BasePermission):
         else:
             return False
 
+
+class IsHROrInterviewer(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.groups.filter(name='Interviewer').exists() |\
+                request.user.groups.filter(name='HR').exists():
+            return True
+        else:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.groups.filter(name='Interviewer').exists() | \
+                request.user.groups.filter(name='HR').exists():
+            return True
+        else:
+            return False
+
+
 class IsOwnerOrReadOnly(permissions.BasePermission):
 
     def has_object_permission(self, request, view, obj):

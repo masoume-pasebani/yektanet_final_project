@@ -1,30 +1,30 @@
+from typing import Union
+
+from django.contrib.auth import get_user_model
 from django.db import models
 
 # Create your models here.
-from accounts.models import Interviewer, Applicant
+from accounts.models import Interviewer, Applicant, HR
 
 
 class Interview(models.Model):
     TYPES = (
-        ('Telephone interview', 'Telephone interview'),
-        ('Technical interview', 'Technical interview'),
-        ('Code interview', 'Code interview'),
-        ('Final interview', 'Final interview'),
+        ('Telephone Interview', 'Telephone Interview'),
+        ('Technical Interview', 'Technical Interview'),
+        ('Code Interview', 'Code Interview'),
+        ('Final Interview', 'Final Interview'),
     )
     date = models.DateTimeField()
     interviewer = models.ForeignKey(Interviewer, null=True, on_delete=models.CASCADE)
-    types = models.CharField(max_length=30, choices=TYPES)
+    applicant = models.ForeignKey(Applicant, null=True, on_delete=models.CASCADE)
+    types = models.CharField(max_length=30, choices=TYPES, default='Telephone Interview')
 
 
 class Comment(models.Model):
+    owner = models.ForeignKey(get_user_model(),null=True, on_delete=models.CASCADE)
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE)
     description = models.TextField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)
-
-
-class InterviewApplication(models.Model):
-    applicant = models.ForeignKey(Applicant, on_delete=models.CASCADE)
-    interview = models.ForeignKey(Interview, on_delete=models.CASCADE)
 
 
 class Feedback(models.Model):
