@@ -5,14 +5,14 @@ from rest_framework import generics, permissions
 from rest_framework.permissions import IsAuthenticated, IsAdminUser
 
 from accounts.models import Applicant, Interviewer, HR
-from accounts.permissions import IsOwnerOrReadOnly, IsHR
+from accounts.permissions import IsOwnerOrReadOnly, IsHR, IsInterviewer, IsNotInterviewer, IsAdminOrOwner
 from accounts.serializers import ApplicantSignUpSerializer, InterviewerSerializer, ApplicantSerializer, HRSerializer
 
 
 class ApplicantRegisterView(generics.CreateAPIView):
     queryset = Applicant.objects.all()
     serializer_class = ApplicantSignUpSerializer
-    permission_classes = []
+    permission_classes = [IsNotInterviewer]
 
 
 class InterviewerRegisterView(generics.CreateAPIView):
@@ -27,5 +27,15 @@ class HRRegisterView(generics.CreateAPIView):
     permission_classes = [IsAdminUser]
 
 
+class EditApplicantProfileView(generics.RetrieveUpdateAPIView):
+    queryset = Applicant.objects.all()
+    serializer_class = ApplicantSignUpSerializer
+    permission_classes = [IsAdminOrOwner]
+
+
+class EditInterviewer(generics.RetrieveUpdateAPIView):
+    queryset = Interviewer.objects.all()
+    serializer_class = InterviewerSerializer
+    permission_classes = [IsOwnerOrReadOnly]
 
 

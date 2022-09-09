@@ -25,7 +25,7 @@ class ApplicantSignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Applicant
-        fields = ('username', 'password', 'first_name', 'last_name', 'resume', 'linkedin', 'age', 'gender')
+        fields = ('id', 'username', 'password', 'first_name', 'last_name', 'resume', 'linkedin', 'age', 'gender', 'status')
 
     def to_representation(self, instance):
         return ApplicantSerializer(instance).data
