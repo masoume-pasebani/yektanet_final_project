@@ -4,10 +4,10 @@ from Interview.views import InterviewRegister, CommentListAPIView, CommentCreate
     CommentUpdateAPIView, FeedbackCreateAPIView, EditInterview
 
 urlpatterns = [
-    path('i/', InterviewRegister.as_view()),
-    path('c/', CommentCreateAPIView.as_view()),
-    path('c2/', CommentListAPIView.as_view()),
-    path('c4/<int:pk>', CommentUpdateAPIView.as_view()),
-    path('f/', FeedbackCreateAPIView.as_view()),
-    path('i2/<int:pk>', EditInterview.as_view())
+    path('create-interview/', InterviewRegister.as_view()),
+  #  path('creat-comment/', CommentCreateAPIView.as_view()),
+   # path('comment-list/', CommentListAPIView.as_view()),
+   # path('edit-comment/<int:pk>', CommentUpdateAPIView.as_view()),
+    path('feedback/', FeedbackCreateAPIView.as_view()),
+    path('edit-interview/<int:pk>', EditInterview.as_view())
 ]
