@@ -71,10 +71,10 @@ class HRSerializer(serializers.ModelSerializer):
         username = self.validated_data.pop('username')
         password = self.validated_data.pop('password')
         user = user_model.objects.create_user(username=username, password=password)
-
-        Token.objects.create(user=user)
+        user.is_staff = True
         user.is_superuser = True
-        user.is_staff = False
+        Token.objects.create(user=user)
+        user.save()
         hr = super().save(user=user)
         user.groups.add(Group.objects.get(name='HR'))
 
