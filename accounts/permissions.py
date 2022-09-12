@@ -2,7 +2,7 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from rest_framework import permissions
 
-from Interview.models import Interview, Comment
+from Interview.models import Interview, Comment, Feedback
 from accounts.models import Interviewer
 
 
@@ -36,7 +36,7 @@ class IsInterviewer(permissions.BasePermission):
 
 class IsHR(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.groups.filter(name='HR').exists()|\
+        if request.user.groups.filter(name='HR').exists() |\
             request.user.is_superuser:
             return True
         else:
@@ -142,6 +142,4 @@ class IsNotApplicant(permissions.BasePermission):
             return True
         else:
             return False
-
-
 

@@ -19,12 +19,9 @@ class Interview(models.Model):
     applicant = models.ForeignKey(Applicant, null=True, on_delete=models.CASCADE)
     types = models.CharField(max_length=30, choices=TYPES, default='Telephone Interview')
 
-    def __str__(self):
-        return self.interviewer+ ' with '+ self.applicant
 
 
 class Comment(models.Model):
-    #owner = models.ForeignKey(Interviewer, null=True, on_delete=models.CASCADE)
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE)
     description = models.TextField(max_length=250)
     created_at = models.DateTimeField(auto_now_add=True)

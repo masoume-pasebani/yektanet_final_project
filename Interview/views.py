@@ -5,11 +5,12 @@ from django.shortcuts import render, get_object_or_404
 # Create your views here.
 
 from rest_framework import generics, status
-
+from rest_framework.authentication import TokenAuthentication
+from rest_framework.permissions import IsAuthenticated
 
 from Interview.models import Interview, Comment, Feedback
 from Interview.serializers import InterviewRegisterSerializer, CommentSerializer, FeedbackSerializer
-from accounts.permissions import IsInterviewer, IsHR, IsHROrInterviewer, IsOwnerOrReadOnly
+from accounts.permissions import IsHR, IsOwnerOrReadOnly, IsInterviewer, IsHROrInterviewer
 
 
 class InterviewRegister(generics.CreateAPIView):
@@ -27,7 +28,8 @@ class CommentCreateAPIView(generics.ListCreateAPIView):
 
     queryset = Comment.objects.all()
     serializer_class = CommentSerializer
-    permission_classes = [IsHROrInterviewer]
+    permission_classes = [IsHR]
+
 
 
 class CommentUpdateAPIView(generics.RetrieveUpdateAPIView):
@@ -45,7 +47,7 @@ class CommentDestroyAPIView(generics.RetrieveDestroyAPIView):
 class FeedbackCreateAPIView(generics.ListCreateAPIView):
     queryset = Feedback.objects.all()
     serializer_class = FeedbackSerializer
-    permission_classes = [IsInterviewer]
+    permission_classes = [IsHROrInterviewer]
 
 
 class EditInterview(generics.RetrieveUpdateAPIView):
