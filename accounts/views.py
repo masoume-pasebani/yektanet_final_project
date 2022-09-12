@@ -2,11 +2,13 @@ from django.shortcuts import render
 
 # Create your views here.
 from rest_framework import generics, permissions
-from rest_framework.permissions import IsAuthenticated, IsAdminUser
+from rest_framework.permissions import IsAuthenticated, IsAdminUser, AllowAny
 
 from accounts.models import Applicant, Interviewer, HR
-from accounts.permissions import IsOwnerOrReadOnly, IsHR, IsInterviewer, IsNotInterviewer, IsAdminOrOwner
-from accounts.serializers import ApplicantSignUpSerializer, InterviewerSerializer, ApplicantSerializer, HRSerializer
+from accounts.permissions import IsOwnerOrReadOnly, IsHR, IsInterviewer, IsNotInterviewer, IsAdminOrOwner, \
+    IsNotApplicant
+from accounts.serializers import ApplicantSignUpSerializer, InterviewerSerializer, ApplicantSerializer, HRSerializer, \
+    InterviewerSerializers
 
 
 class ApplicantRegisterView(generics.CreateAPIView):
@@ -18,7 +20,8 @@ class ApplicantRegisterView(generics.CreateAPIView):
 class InterviewerRegisterView(generics.CreateAPIView):
     queryset = Interviewer.objects.all()
     serializer_class = InterviewerSerializer
-    permissions_classes = []
+    permission_classes = [IsNotApplicant]
+
 
 
 class HRRegisterView(generics.CreateAPIView):
@@ -29,13 +32,13 @@ class HRRegisterView(generics.CreateAPIView):
 
 class EditApplicantProfileView(generics.RetrieveUpdateAPIView):
     queryset = Applicant.objects.all()
-    serializer_class = ApplicantSignUpSerializer
+    serializer_class = ApplicantSerializer
     permission_classes = [IsAdminOrOwner]
 
 
 class EditInterviewer(generics.RetrieveUpdateAPIView):
     queryset = Interviewer.objects.all()
-    serializer_class = InterviewerSerializer
+    serializer_class = InterviewerSerializers
     permission_classes = [IsOwnerOrReadOnly]
 
 

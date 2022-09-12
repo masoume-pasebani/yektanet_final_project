@@ -27,7 +27,7 @@ class ApplicantSignUpSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Applicant
-        fields = ('id', 'username', 'password','email', 'first_name', 'last_name', 'resume', 'linkedin', 'age', 'gender', 'status')
+        fields = ( 'username', 'password', 'email', 'first_name', 'last_name', 'resume', 'linkedin', 'age', 'gender', 'status')
 
     def to_representation(self, instance):
         return ApplicantSerializer(instance).data
@@ -64,6 +64,17 @@ class InterviewerSerializer(serializers.ModelSerializer):
         model = Interviewer
         fields = ('username', 'password', 'email', 'first_name', 'last_name')
 
+    def to_representation(self, instance):
+        return InterviewerSerializers(instance).data
+
+
+class InterviewerSerializers(serializers.ModelSerializer):
+    id = serializers.ReadOnlyField()
+
+    class Meta:
+        model = Interviewer
+        fields = ['id', 'first_name', 'last_name', 'phone_number']
+
 
 class HRSerializer(serializers.ModelSerializer):
     username = serializers.CharField(max_length=100, write_only=True)
@@ -89,3 +100,7 @@ class HRSerializer(serializers.ModelSerializer):
     class Meta:
         model = HR
         fields = ('username', 'password', 'email', 'first_name', 'last_name', 'phone_number')
+
+
+
+

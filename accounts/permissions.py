@@ -2,6 +2,9 @@ from django.http import HttpResponse
 from django.shortcuts import redirect
 from rest_framework import permissions
 
+from Interview.models import Interview, Comment
+from accounts.models import Interviewer
+
 
 class IsApplicant(permissions.BasePermission):
     def has_permission(self, request, view):
@@ -33,13 +36,15 @@ class IsInterviewer(permissions.BasePermission):
 
 class IsHR(permissions.BasePermission):
     def has_permission(self, request, view):
-        if request.user.groups.filter(name='HR').exists():
+        if request.user.groups.filter(name='HR').exists()|\
+            request.user.is_superuser:
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if request.user.groups.filter(name='HR').exists():
+        if request.user.groups.filter(name='HR').exists()|\
+                request.user.is_superuser:
             return True
         else:
             return False
@@ -48,14 +53,16 @@ class IsHR(permissions.BasePermission):
 class IsHROrInterviewer(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Interviewer').exists() |\
-                request.user.groups.filter(name='HR').exists():
+                request.user.groups.filter(name='HR').exists() |\
+                request.user.is_superuser:
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if request.user.groups.filter(name='Interviewer').exists() | \
-                request.user.groups.filter(name='HR').exists():
+        if request.user.groups.filter(name='Interviewer').exists() |\
+                request.user.groups.filter(name='HR').exists()|\
+                request.user.is_superuser:
             return True
         else:
             return False
@@ -64,29 +71,30 @@ class IsHROrInterviewer(permissions.BasePermission):
 class IsNotInterviewer(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Applicant').exists() |\
-                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous:
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
         if request.user.groups.filter(name='Applicant').exists() | \
-                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous:
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
             return True
         else:
             return False
+
 
 class IsNotInterviewer(permissions.BasePermission):
     def has_permission(self, request, view):
         if request.user.groups.filter(name='Applicant').exists() |\
-                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous:
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
         if request.user.groups.filter(name='Applicant').exists() | \
-                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous:
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
             return True
         else:
             return False
@@ -113,9 +121,27 @@ class IsAdminOrOwner(permissions.BasePermission):
             # database ijad nakonand mese method update ,unvaght ejaze dastresi dare
             return True
 
-        if request.user.groups.filter(name='HR').exists():  # if uswer loged in and is admin can access to all method
+        if request.user.groups.filter(name='HR').exists() | request.user.is_superuser:  # if uswer loged in and is admin can access to all method
             return True
 
         # Instance must have an attribute named `owner`.
         return obj.user == request.user
+
+
+class IsNotApplicant(permissions.BasePermission):
+    def has_permission(self, request, view):
+        if request.user.groups.filter(name='Interviewer').exists() |\
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
+            return True
+        else:
+            return False
+
+    def has_object_permission(self, request, view, obj):
+        if request.user.groups.filter(name='Interviewer').exists() | \
+                request.user.groups.filter(name='HR').exists() | request.user.is_anonymous | request.user.is_superuser:
+            return True
+        else:
+            return False
+
+
 
