@@ -62,7 +62,7 @@ class InterviewerSerializer(serializers.ModelSerializer):
 
     class Meta:
         model = Interviewer
-        fields = ('username', 'password', 'email', 'first_name', 'last_name')
+        fields = ('username', 'password', 'email', 'first_name', 'last_name', 'phone_number')
 
     def to_representation(self, instance):
         return InterviewerSerializers(instance).data

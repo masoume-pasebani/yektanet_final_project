@@ -25,9 +25,9 @@ class CommentSerializer(serializers.ModelSerializer):
 
 
 class FeedbackSerializer(serializers.ModelSerializer):
-    interviewer = InterviewerSerializer(read_only=True)
+    interviewer = request.Request.user
     class Meta:
         model = Feedback
-        fields = ('id',  'feedback','interviewer', 'interview', 'rate', 'created_at')
-
+        fields = ('feedback', 'interviewer', 'interview', 'rate', 'created_at')
+        #read_only_fields = ('interviewer', )
 
