@@ -145,14 +145,17 @@ class IsNotApplicant(permissions.BasePermission):
 
 
 class IsInterviewerOf(permissions.BasePermission):
+
+
+
     def has_permission(self, request, view):
-        if request.user.groups.filter(name='Interviewer').exists() and Interview.objects.filter(interviewer__user=request.user) and Interviewer.objects.get(user=request.user).interview_set.all():
+        if Interview.objects.filter(interviewer__user=request.user) and Interviewer.objects.get(user=request.user).interview_set.all():
             return True
         else:
             return False
 
     def has_object_permission(self, request, view, obj):
-        if request.user.groups.filter(name='Interviewer').exists() and Interview.objects.filter(interviewer__user=request.user) and Interviewer.objects.get(user=request.user).interview_set.all():
+        if Interview.objects.filter(interviewer__user=request.user) and Interviewer.objects.get(user=request.user).interview_set.all():
             return True
         else:
             return False

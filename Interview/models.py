@@ -20,7 +20,6 @@ class Interview(models.Model):
     types = models.CharField(max_length=30, choices=TYPES, default='Telephone Interview')
 
 
-
 class Comment(models.Model):
     interview = models.ForeignKey(Interview, on_delete=models.CASCADE)
     description = models.TextField(max_length=250)
@@ -28,6 +27,7 @@ class Comment(models.Model):
 
     def __str__(self):
         return self.description
+
 
 class Feedback(models.Model):
     RATE = (

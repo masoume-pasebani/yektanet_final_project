@@ -6,7 +6,6 @@ from accounts.serializers import InterviewerSerializer
 
 
 class InterviewRegisterSerializer(serializers.ModelSerializer):
-    id = serializers.ReadOnlyField()
 
     class Meta:
 
@@ -21,13 +20,11 @@ class CommentSerializer(serializers.ModelSerializer):
         fields = ('id', 'interview', 'description', 'created_at')
 
 
-
-
-
 class FeedbackSerializer(serializers.ModelSerializer):
-    interviewer = request.Request.user
+    interviewer = InterviewerSerializer(read_only=True)
+
+
     class Meta:
         model = Feedback
         fields = ('feedback', 'interviewer', 'interview', 'rate', 'created_at')
-        #read_only_fields = ('interviewer', )
 
